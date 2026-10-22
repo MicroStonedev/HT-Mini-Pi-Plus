@@ -1,0 +1,88 @@
+Loading user config located at: '/home/ubuntu/miniconda3/envs/isaaclab/lib/python3.10/site-packages/omni/data/Kit/Isaac-Sim/4.5/user.config.json'
+[INFO][AppLauncher]: Loading experience file: /home/ubuntu/IsaacLab-2.1.0/apps/isaaclab.python.headless.kit
+[INFO] Loading experiment from directory: /home/ubuntu/Mini-Pi-Plus_AMP/logs/pi_plus_amp_sym_flat
+[RUN] sim_t=5.0s steps=250 resets=0 reward=0.084
+[RUN] sim_t=10.0s steps=500 resets=0 reward=0.084
+[RUN] sim_t=15.0s steps=750 resets=0 reward=0.084
+[RUN] sim_t=20.0s steps=1000 resets=0 reward=0.084
+[RUN] sim_t=25.0s steps=1250 resets=0 reward=0.084
+[RUN] sim_t=30.0s steps=1500 resets=0 reward=0.084
+[RUN] sim_t=35.0s steps=1750 resets=0 reward=0.088
+[RESET] sim_t=40.0s ep_len 1999->0
+[RUN] sim_t=40.0s steps=2000 resets=1 reward=0.088
+[RUN] sim_t=45.0s steps=2250 resets=1 reward=0.085
+[RUN] sim_t=50.0s steps=2500 resets=1 reward=0.086
+[RUN] sim_t=55.0s steps=2750 resets=1 reward=0.086
+[RUN] sim_t=60.0s steps=3000 resets=1 reward=0.091
+[RUN] sim_t=65.0s steps=3250 resets=1 reward=0.091
+[RUN] sim_t=70.0s steps=3500 resets=1 reward=0.091
+[RUN] sim_t=75.0s steps=3750 resets=1 reward=0.091
+[RESET] sim_t=80.0s ep_len 1999->0
+[RUN] sim_t=80.0s steps=4000 resets=2 reward=0.091
+[RUN] sim_t=85.0s steps=4250 resets=2 reward=0.070
+[RUN] sim_t=90.0s steps=4500 resets=2 reward=0.073
+[RUN] sim_t=95.0s steps=4750 resets=2 reward=0.085
+[RUN] sim_t=100.0s steps=5000 resets=2 reward=0.086
+[RUN] sim_t=105.0s steps=5250 resets=2 reward=0.054
+[RUN] sim_t=110.0s steps=5500 resets=2 reward=0.087
+[RUN] sim_t=115.0s steps=5750 resets=2 reward=0.088
+[RESET] sim_t=120.0s ep_len 1999->0
+[RUN] sim_t=120.0s steps=6000 resets=3 reward=0.088
+[RUN] sim_t=125.0s steps=6250 resets=3 reward=0.063
+[RUN] sim_t=130.0s steps=6500 resets=3 reward=0.067
+[RUN] sim_t=135.0s steps=6750 resets=3 reward=0.070
+[RUN] sim_t=140.0s steps=7000 resets=3 reward=0.071
+[RUN] sim_t=145.0s steps=7250 resets=3 reward=0.074
+[RUN] sim_t=150.0s steps=7500 resets=3 reward=0.075
+[RUN] sim_t=155.0s steps=7750 resets=3 reward=0.084
+[RESET] sim_t=160.0s ep_len 1999->0
+[RUN] sim_t=160.0s steps=8000 resets=4 reward=0.086
+[RUN] sim_t=165.0s steps=8250 resets=4 reward=0.075
+[RUN] sim_t=170.0s steps=8500 resets=4 reward=0.088
+[RUN] sim_t=175.0s steps=8750 resets=4 reward=0.088
+[RUN] sim_t=180.0s steps=9000 resets=4 reward=0.087
+[RUN] sim_t=185.0s steps=9250 resets=4 reward=0.086
+[RUN] sim_t=190.0s steps=9500 resets=4 reward=0.087
+[RUN] sim_t=195.0s steps=9750 resets=4 reward=0.087
+[RESET] sim_t=200.0s ep_len 1999->0
+[RUN] sim_t=200.0s steps=10000 resets=5 reward=0.086
+[RUN] sim_t=205.0s steps=10250 resets=5 reward=0.077
+[RUN] sim_t=210.0s steps=10500 resets=5 reward=0.075
+[RUN] sim_t=215.0s steps=10750 resets=5 reward=0.076
+[RUN] sim_t=220.0s steps=11000 resets=5 reward=0.076
+[RUN] sim_t=225.0s steps=11250 resets=5 reward=0.076
+[RUN] sim_t=230.0s steps=11500 resets=5 reward=0.086
+[RUN] sim_t=235.0s steps=11750 resets=5 reward=0.086
+[RESET] sim_t=240.0s ep_len 1999->0
+[RUN] sim_t=240.0s steps=12000 resets=6 reward=0.088
+[RUN] sim_t=245.0s steps=12250 resets=6 reward=0.089
+[RUN] sim_t=250.0s steps=12500 resets=6 reward=0.088
+[RUN] sim_t=255.0s steps=12750 resets=6 reward=0.086
+[RUN] sim_t=260.0s steps=13000 resets=6 reward=0.085
+[RUN] sim_t=265.0s steps=13250 resets=6 reward=0.085
+[RUN] sim_t=270.0s steps=13500 resets=6 reward=0.084
+[RUN] sim_t=275.0s steps=13750 resets=6 reward=0.084
+[RESET] sim_t=280.0s ep_len 1999->0
+[RUN] sim_t=280.0s steps=14000 resets=7 reward=0.084
+[RUN] sim_t=285.0s steps=14250 resets=7 reward=0.091
+[RUN] sim_t=290.0s steps=14500 resets=7 reward=0.088
+[RUN] sim_t=295.0s steps=14750 resets=7 reward=0.088
+[RUN] sim_t=300.0s steps=15000 resets=7 reward=0.087
+[RUN] sim_t=305.0s steps=15250 resets=7 reward=0.087
+[RUN] sim_t=310.0s steps=15500 resets=7 reward=0.087
+[RUN] sim_t=315.0s steps=15750 resets=7 reward=0.085
+[RESET] sim_t=320.0s ep_len 1999->0
+[RUN] sim_t=320.0s steps=16000 resets=8 reward=0.085
+[RUN] sim_t=325.0s steps=16250 resets=8 reward=0.089
+[RUN] sim_t=330.0s steps=16500 resets=8 reward=0.091
+[RUN] sim_t=335.0s steps=16750 resets=8 reward=0.087
+[RUN] sim_t=340.0s steps=17000 resets=8 reward=0.085
+[RUN] sim_t=345.0s steps=17250 resets=8 reward=0.084
+[RUN] sim_t=350.0s steps=17500 resets=8 reward=0.085
+[RUN] sim_t=355.0s steps=17750 resets=8 reward=0.085
+[RESET] sim_t=360.0s ep_len 1999->0
+[RUN] sim_t=360.0s steps=18000 resets=9 reward=0.085
+[RUN] sim_t=365.0s steps=18250 resets=9 reward=0.077
+[RUN] sim_t=370.0s steps=18500 resets=9 reward=0.088
+[RUN] sim_t=375.0s steps=18750 resets=9 reward=0.088
+[RUN] sim_t=380.0s steps=19000 resets=9 reward=0.082

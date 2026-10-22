@@ -1,0 +1,24 @@
+# 大文件不入库（点云/视频/checkpoint 走云盘）
+*.ply
+*.mp4
+*.pt
+*.onnx
+*.spz
+*.egg-info/
+
+# 第三方官方仓库不重复存（版本: Mini-Pi-Plus_AMP 官方 main, 2026-10 快照）
+third_party/
+
+# 运行产物
+logs/
+__pycache__/
+*.pyc
+.cache/
+
+# Office 临时文件
+~$*
+
+# 本地私密文档（含个人信息，不进仓库）
+简历*.docx
+简历*.md
+.video_agent/
