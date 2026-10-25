@@ -80,7 +80,7 @@ para(doc, "Day 1 · 全景图：把项目装进一张图里（1.5h）", 13, True
 para(doc, "任务 1（30min）：精读 play_log.py 主循环", 11, True)
 code(doc, "文件：tools/play_log.py 第 260–285 行（仅 25 行）")
 para(doc, "读懂四件事：① policy(obs) 这一行发生了什么；② command_generator 的三个数字是什么（x速度/y速度/转向速率）；"
-          "③ env.step 返回的四个值各是什么；④ episode_length_buf 为什么能用来判断跌倒。", 10.5, 0.5)
+          "③ env.step 返回的四个值各是什么；④ episode_length_buf 为什么能用来判断跌倒。", 10.5, indent=0.5)
 para(doc, "任务 2（45min）：手画链路图（纸/画图软件均可）", 11, True)
 para(doc, "8 个框、7 个箭头，每个框旁写一句话「它是什么、为什么需要」：", 10.5)
 code(doc, "checkpoint(1.3MB神经网络) → 观测345维 → MLP(512/256/128) → 动作20维\n"
@@ -95,10 +95,10 @@ para(doc, "任务 1（60min）：pi_plus_amp_sym_cfg.py 逐段读", 11, True)
 code(doc, "文件：云端 ~/Mini-Pi-Plus_AMP/legged_lab/envs/pi_plus/pi_plus_amp_sym_cfg.py\n"
           "（本地对照：third_party/Mini-Pi-Plus_AMP/ 同路径）")
 para(doc, "按三个主题找答案：", 10.5, True)
-para(doc, "观测：本体感受有哪些（关节位置/速度、姿态、速度估计）？命令占几维？历史帧几帧？", 10.5, 0.5)
+para(doc, "观测：本体感受有哪些（关节位置/速度、姿态、速度估计）？命令占几维？历史帧几帧？", 10.5, indent=0.5)
 para(doc, "奖励：找出 28 个分项里的 5 个核心——速度跟踪、姿态保持、关节限位、足部接触、动作变化率；"
-          "每个分清楚是「任务项」（奖励做对事）还是「正则项」（惩罚坏习惯）", 10.5, 0.5)
-para(doc, "命令：速度范围是多少？文件名里的 sym（对称性）体现在哪个配置？", 10.5, 0.5)
+          "每个分清楚是「任务项」（奖励做对事）还是「正则项」（惩罚坏习惯）", 10.5, indent=0.5)
+para(doc, "命令：速度范围是多少？文件名里的 sym（对称性）体现在哪个配置？", 10.5, indent=0.5)
 para(doc, "任务 2（30min）：对照 TensorBoard 的 Episode_Reward 28 条曲线，把每条曲线与配置文件里的一项对应起来", 11, True)
 para(doc, "任务 3（30min）：自测三问", 11, True)
 para(doc, "① 哪个奖励项鼓励前进？哪项惩罚能耗？② 如果把速度跟踪奖励权重调到 0，机器人会怎么走？"
@@ -112,7 +112,7 @@ code(doc, "云端 ~/Mini-Pi-Plus_AMP/legged_lab/scripts/train.py\n"
           "云端 ~/Mini-Pi-Plus_AMP/rsl_rl/rsl_rl/runners/ 下的 AMP runner")
 para(doc, "梳理一次迭代的五个阶段并画出「iter 解剖图」：", 10.5)
 para(doc, "① Rollout 采样（4096 环境 × 24 步 ≈ 10 万条转移）→ ② GAE 算优势 → ③ PPO 更新（clip 目标）"
-          "→ ④ 价值网络回归 → ⑤ AMP 判别器更新（策略动作 vs 参考动作）", 10.5, 0.5)
+          "→ ④ 价值网络回归 → ⑤ AMP 判别器更新（策略动作 vs 参考动作）", 10.5, indent=0.5)
 para(doc, "任务 2（30min）：把五个阶段对应到 TensorBoard 五条曲线（surrogate/value_function/amp/entropy/learning_rate）", 11, True)
 para(doc, "任务 3（30min）：自测三问", 11, True)
 para(doc, "① 为什么先采样后更新（on-policy 的含义）？② 旧数据为什么不能复用？"
@@ -135,9 +135,9 @@ para(doc, "Day 5 · 动手实验日：预测→验证（3h，含等待）", 13, 
 para(doc, "实验规则：改之前先写下预测，跑完对照，错了找原因——对上=真懂，没对=找到知识洞。", 11, True)
 para(doc, "实验 1（90min）：命令速度上限 1.2 → 0.3", 11, True)
 code(doc, "云端改 pi_plus_amp_sym_cfg.py 命令 ranges 后：500 iter 短训（约 20 分钟）")
-para(doc, "预测点：回合长度会更高还是更低？速度跟踪奖励占比变化？sim2sim 回放速度会变成多少？", 10.5, 0.5)
+para(doc, "预测点：回合长度会更高还是更低？速度跟踪奖励占比变化？sim2sim 回放速度会变成多少？", 10.5, indent=0.5)
 para(doc, "实验 2（90min）：任选一个正则项奖励权重 ×10", 11, True)
-para(doc, "预测点：动作会变得保守/激进？回合长度受影响吗？TensorBoard 哪条曲线先变化？", 10.5, 0.5)
+para(doc, "预测点：动作会变得保守/激进？回合长度受影响吗？TensorBoard 哪条曲线先变化？", 10.5, indent=0.5)
 para(doc, "当日产出：实验记录表（预测/实际/差异原因三栏）。", 10.5, True, GREEN)
 
 # ============ Day 6 ============
