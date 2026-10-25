@@ -53,7 +53,7 @@ def record(model_path: str, camera: str, duration: float, out_path: str,
     sign = 1 if mujoco.__version__ >= "3" else 1
     data.qpos[7:] = DEFAULT_DOF_POS.copy()
     mujoco.mj_forward(model, data)
-    policy = load_policy(DEFAULT_POLICY)
+    policy = load_policy(args.policy)
 
     cam_id = None
     if camera in CAM_NAMES:
@@ -133,6 +133,7 @@ if __name__ == "__main__":
     parser.add_argument("--duration", type=float, default=15.0)
     parser.add_argument("--cmd", type=float, nargs=3, default=[0.5, 0.0, 0.0])
     parser.add_argument("--push", type=float, default=0.0, help="推力扰动(N)")
+    parser.add_argument("--policy", default=DEFAULT_POLICY, help="策略jit文件(默认官方model_40000)")
     parser.add_argument("--width", type=int, default=960)
     parser.add_argument("--height", type=int, default=720)
     args = parser.parse_args()
