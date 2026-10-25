@@ -22,3 +22,5 @@ __pycache__/
 简历*.docx
 简历*.md
 .video_agent/
+run1_series/
+checkpoints/*.pt
