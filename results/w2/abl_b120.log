@@ -1,0 +1,225 @@
+/home/ubuntu/miniconda3/envs/isaaclab/lib/python3.10/site-packages/pygame/pkgdata.py:25: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
+  from pkg_resources import resource_stream, resource_exists
+[Warning] [simulation_app.simulation_app] Modules: ['omni.kit_app'] were loaded before SimulationApp was started and might not be loaded correctly.
+[Warning] [simulation_app.simulation_app] Please check to make sure no extra omniverse or pxr modules are imported before the call to SimulationApp(...)
+Loading user config located at: '/home/ubuntu/miniconda3/envs/isaaclab/lib/python3.10/site-packages/omni/data/Kit/Isaac-Sim/4.5/user.config.json'
+[Info] [carb] Logging to file: /home/ubuntu/miniconda3/envs/isaaclab/lib/python3.10/site-packages/omni/logs/Kit/Isaac-Sim/4.5/kit_20261025_142103.log
+2026-10-25 06:21:03 [0ms] [Warning] [omni.kit.app.plugin] No crash reporter present, dumps uploading isn't available.
+2026-10-25 06:21:03 [38ms] [Warning] [omni.ext.plugin] [ext: rendering_modes] Extensions config 'extension.toml' doesn't exist '/home/ubuntu/IsaacLab-2.1.0/apps/rendering_modes' or '/home/ubuntu/IsaacLab-2.1.0/apps/rendering_modes/config'
+2026-10-25 06:21:03 [237ms] [Warning] [omni.usd_config.extension] Enable omni.materialx.libs extension to use MaterialX
+2026-10-25 06:21:03 [364ms] [Warning] [omni.platforminfo.plugin] failed to open the default display.  Can't verify X Server version.
+2026-10-25 06:21:03 [367ms] [Warning] [omni.platforminfo.plugin] failed to load XRAndR.
+2026-10-25 06:21:04 [667ms] [Warning] [omni.datastore] OmniHub is inaccessible
+2026-10-25 06:21:04 [710ms] [Warning] [omni.isaac.dynamic_control] omni.isaac.dynamic_control is deprecated as of Isaac Sim 4.5. No action is needed from end-users.
+
+|---------------------------------------------------------------------------------------------|
+| Driver Version: 595.58.03     | Graphics API: Vulkan
+|=============================================================================================|
+| GPU | Name                             | Active | LDA | GPU Memory | Vendor-ID | LUID       |
+|     |                                  |        |     |            | Device-ID | UUID       |
+|     |                                  |        |     |            | Bus-ID    |            |
+|---------------------------------------------------------------------------------------------|
+| 0   | NVIDIA GeForce RTX 4090          | Yes: 0 |     | 24810   MB | 10de      | 0          |
+|     |                                  |        |     |            | 2684      | cd1309ae.. |
+|     |                                  |        |     |            | 29        |            |
+|=============================================================================================|
+| OS: 22.04.5 LTS (Jammy Jellyfish) ubuntu, Version: 22.04.5, Kernel: 5.15.0-140-generic
+| Processor: AMD EPYC 7542 32-Core Processor
+| Cores: 10 | Logical Cores: 10
+|---------------------------------------------------------------------------------------------|
+| Total Memory (MB): 32085 | Free Memory: 29897
+| Total Page/Swap (MB): 0 | Free Page/Swap: 0
+|---------------------------------------------------------------------------------------------|
+2026-10-25 06:21:08 [4,953ms] [Warning] [isaaclab.terrains.terrain_importer] Visual material specified for ground plane but no diffuse color found. Using default color: (0.0, 0.0, 0.0)
+2026-10-25 06:21:08 [5,092ms] [Warning] [carb.windowing-glfw.plugin] GLFW initialization failed.
+2026-10-25 06:21:08 [5,092ms] [Warning] [carb] Failed to startup plugin carb.windowing-glfw.plugin (interfaces: [carb::windowing::IGLContext v1.0],[carb::windowing::IWindowing v1.5]) (impl: carb.windowing-glfw.plugin)
+2026-10-25 06:21:08 [5,095ms] [Error] [gpu.foundation.plugin] DriverShaderCacheManager::init() called without a shutdown()!
+
+|---------------------------------------------------------------------------------------------|
+| Driver Version: 595.58.03     | Graphics API: Vulkan
+|=============================================================================================|
+| GPU | Name                             | Active | LDA | GPU Memory | Vendor-ID | LUID       |
+|     |                                  |        |     |            | Device-ID | UUID       |
+|     |                                  |        |     |            | Bus-ID    |            |
+|---------------------------------------------------------------------------------------------|
+| 0   | NVIDIA GeForce RTX 4090          | Yes: 0 |     | 24810   MB | 10de      | 0          |
+|     |                                  |        |     |            | 2684      | cd1309ae.. |
+|     |                                  |        |     |            | 29        |            |
+|=============================================================================================|
+| OS: 22.04.5 LTS (Jammy Jellyfish) ubuntu, Version: 22.04.5, Kernel: 5.15.0-140-generic
+| Processor: AMD EPYC 7542 32-Core Processor
+| Cores: 10 | Logical Cores: 10
+|---------------------------------------------------------------------------------------------|
+| Total Memory (MB): 32085 | Free Memory: 29602
+| Total Page/Swap (MB): 0 | Free Page/Swap: 0
+|---------------------------------------------------------------------------------------------|
+2026-10-25 06:21:09 [5,772ms] [Warning] [carb.windowing-glfw.plugin] GLFW initialization failed.
+2026-10-25 06:21:09 [5,772ms] [Warning] [carb] Failed to startup plugin carb.windowing-glfw.plugin (interfaces: [carb::windowing::IGLContext v1.0],[carb::windowing::IWindowing v1.5]) (impl: carb.windowing-glfw.plugin)
+2026-10-25 06:21:09 [5,791ms] [Warning] [carb.windowing-glfw.plugin] GLFW initialization failed.
+2026-10-25 06:21:09 [5,791ms] [Warning] [carb] Failed to startup plugin carb.windowing-glfw.plugin (interfaces: [carb::windowing::IGLContext v1.0],[carb::windowing::IWindowing v1.5]) (impl: carb.windowing-glfw.plugin)
+2026-10-25 06:21:09 [5,799ms] [Warning] [carb.windowing-glfw.plugin] GLFW initialization failed.
+2026-10-25 06:21:09 [5,799ms] [Warning] [carb] Failed to startup plugin carb.windowing-glfw.plugin (interfaces: [carb::windowing::IGLContext v1.0],[carb::windowing::IWindowing v1.5]) (impl: carb.windowing-glfw.plugin)
+2026-10-25 06:21:09 [5,813ms] [Warning] [carb.windowing-glfw.plugin] GLFW initialization failed.
+2026-10-25 06:21:09 [5,813ms] [Warning] [carb] Failed to startup plugin carb.windowing-glfw.plugin (interfaces: [carb::windowing::IGLContext v1.0],[carb::windowing::IWindowing v1.5]) (impl: carb.windowing-glfw.plugin)
+2026-10-25 06:21:09 [5,815ms] [Warning] [carb.windowing-glfw.plugin] GLFW initialization failed.
+2026-10-25 06:21:09 [5,815ms] [Warning] [carb] Failed to startup plugin carb.windowing-glfw.plugin (interfaces: [carb::windowing::IGLContext v1.0],[carb::windowing::IWindowing v1.5]) (impl: carb.windowing-glfw.plugin)
+2026-10-25 06:21:09 [5,817ms] [Warning] [carb.windowing-glfw.plugin] GLFW initialization failed.
+2026-10-25 06:21:09 [5,817ms] [Warning] [carb] Failed to startup plugin carb.windowing-glfw.plugin (interfaces: [carb::windowing::IGLContext v1.0],[carb::windowing::IWindowing v1.5]) (impl: carb.windowing-glfw.plugin)
+2026-10-25 06:21:09 [6,554ms] [Warning] [omni.graph.visualization.nodes._impl.extension] No Viewport Window to add omni.graph.visualization.nodes-2.1.1 scene to
+2026-10-25 06:21:14 [11,557ms] [Warning] [omni.usd] Warning: in GetNodeDiscoveryResults at line 136 of /builds/omniverse/usd-ci/USD/pxr/usd/usdShade/shaderDefUtils.cpp -- Unable to resolve info:sourceAsset </UsdPreviewSurface.info:mdl:sourceAsset> with value @UsdPreviewSurface.mdl@.
+
+2026-10-25 06:21:14 [11,559ms] [Warning] [omni.usd] Warning: in GetNodeDiscoveryResults at line 136 of /builds/omniverse/usd-ci/USD/pxr/usd/usdShade/shaderDefUtils.cpp -- Unable to resolve info:sourceAsset </UsdUVTexture.info:mdl:sourceAsset> with value @UsdPreviewSurface.mdl@.
+
+2026-10-25 0/home/ubuntu/IsaacLab-2.1.0/source/isaaclab/isaaclab/envs/mdp/events.py:501: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  actuator_joint_indices = torch.tensor(actuator.joint_indices, device=asset.device)
+[INFO][AppLauncher]: Using device: cuda:0
+[INFO][AppLauncher]: Loading experience file: /home/ubuntu/IsaacLab-2.1.0/apps/isaaclab.python.headless.kit
+无法打开手柄设备: Invalid joystick device number
+Setting seed: 42
+traj_len:3.299967
+Loaded 3.299967s. motion from legged_lab/envs/pi_plus/datasets_0_100onlywalk/motion_visualization/yuandizuozhuan_play.txt.
+traj_len:3.299967
+Loaded 3.299967s. motion from legged_lab/envs/pi_plus/datasets_0_100onlywalk/motion_visualization/zuoyi_play.txt.
+traj_len:3.299967
+Loaded 3.299967s. motion from legged_lab/envs/pi_plus/datasets_0_100onlywalk/motion_visualization/yuandiyouzhuan_play.txt.
+traj_len:3.299967
+Loaded 3.299967s. motion from legged_lab/envs/pi_plus/datasets_0_100onlywalk/motion_visualization/zouxianghou_play.txt.
+traj_len:3.299967
+Loaded 3.299967s. motion from legged_lab/envs/pi_plus/datasets_0_100onlywalk/motion_visualization/zouzuozhuan_play.txt.
+traj_len:3.299967
+Loaded 3.299967s. motion from legged_lab/envs/pi_plus/datasets_0_100onlywalk/motion_visualization/youyi_play.txt.
+traj_len:3.299967
+Loaded 3.299967s. motion from legged_lab/envs/pi_plus/datasets_0_100onlywalk/motion_visualization/zouxiangqian_play.txt.
+traj_len:3.299967
+Loaded 3.299967s. motion from legged_lab/envs/pi_plus/datasets_0_100onlywalk/motion_visualization/zouyouzhuan_play.txt.
+[INFO] Loading experiment from directory: /home/ubuntu/Mini-Pi-Plus_AMP/logs/pi_plus_amp_sym_flat
+Actor MLP: Sequential(
+  (0): Linear(in_features=345, out_features=512, bias=True)
+  (1): ELU(alpha=1.0)
+  (2): Linear(in_features=512, out_features=256, bias=True)
+  (3): ELU(alpha=1.0)
+  (4): Linear(in_features=256, out_features=128, bias=True)
+  (5): ELU(alpha=1.0)
+  (6): Linear(in_features=128, out_features=20, bias=True)
+)
+Critic MLP: Sequential(
+  (0): Linear(in_features=370, out_features=512, bias=True)
+  (1): ELU(alpha=1.0)
+  (2): Linear(in_features=512, out_features=256, bias=True)
+  (3): ELU(alpha=1.0)
+  (4): Linear(in_features=256, out_features=128, bias=True)
+  (5): ELU(alpha=1.0)
+  (6): Linear(in_features=128, out_features=1, bias=True)
+)
+traj_len:3.299967
+Loaded 3.299967s. motion from legged_lab/envs/pi_plus/datasets_0_100onlywalk/motion_amp_expert/zouxianghou.txt.
+traj_len:3.299967
+Loaded 3.299967s. motion from legged_lab/envs/pi_plus/datasets_0_100onlywalk/motion_amp_expert/zouxiangqian.txt.
+traj_len:3.299967
+Loaded 3.299967s. motion from legged_lab/envs/pi_plus/datasets_0_100onlywalk/motion_amp_expert/yuandiyouzhuan.txt.
+traj_len:3.299967
+Loaded 3.299967s. motion from legged_lab/envs/pi_plus/datasets_0_100onlywalk/motion_amp_expert/zuoyi.txt.
+traj_len:3.299967
+Loaded 3.299967s. motion from legged_lab/envs/pi_plus/datasets_0_100onlywalk/motion_amp_expert/zouyouzhuan.txt.
+traj_len:3.299967
+Loaded 3.299967s. motion from legged_lab/envs/pi_plus/datasets_0_100onlywalk/motion_amp_expert/yuandizuozhuan.txt.
+traj_len:3.299967
+Loaded 3.299967s. motion from legged_lab/envs/pi_plus/datasets_0_100onlywalk/motion_amp_expert/youyi.txt.
+traj_len:3.299967
+Loaded 3.299967s. motion from legged_lab/envs/pi_plus/datasets_0_100onlywalk/motion_amp_expert/zouzuozhuan.txt.
+Preloading 200000 transitions
+Finished preloading
+[ABL] torso body: base_link
+[ABL] total mass 10.98 kg; dv per push = 5.464 m/s
+[RUN] sim_t=5.0s steps=250 resets=0 reward=0.089
+[RUN] sim_t=10.0s steps=500 resets=0 reward=0.089
+[RUN] sim_t=15.0s steps=750 resets=0 reward=0.089
+[RUN] sim_t=20.0s steps=1000 resets=0 reward=0.089
+[RUN] sim_t=25.0s steps=1250 resets=0 reward=0.076
+[RUN] sim_t=30.0s steps=1500 resets=0 reward=0.089
+[RUN] sim_t=35.0s steps=1750 resets=0 reward=0.089
+[RESET] sim_t=40.0s ep_len 1999->0
+[RUN] sim_t=40.0s steps=2000 resets=1 reward=0.089
+[RUN] sim_t=45.0s steps=2250 resets=1 reward=0.082
+[PUSH] t=50.0 dv=5.464 m/s (F=120.0N x 0.5s)
+[RUN] sim_t=50.0s steps=2500 resets=1 reward=0.083
+[RESET] sim_t=50.3s ep_len 513->0
+[RUN] sim_t=55.0s steps=2750 resets=2 reward=0.089
+[RUN] sim_t=60.0s steps=3000 resets=2 reward=0.089
+[RUN] sim_t=65.0s steps=3250 resets=2 reward=0.089
+[RUN] sim_t=70.0s steps=3500 resets=2 reward=0.067
+[RUN] sim_t=75.0s steps=3750 resets=2 reward=0.089
+[RUN] sim_t=80.0s steps=4000 resets=2 reward=0.089
+[RUN] sim_t=85.0s steps=4250 resets=2 reward=0.089
+[RUN] sim_t=90.0s steps=4500 resets=2 reward=0.089
+[RESET] sim_t=90.3s ep_len 1999->0
+[RUN] sim_t=95.0s steps=4750 resets=3 reward=0.016
+[PUSH] t=100.0 dv=5.464 m/s (F=120.0N x 0.5s)
+[RUN] sim_t=100.0s steps=5000 resets=3 reward=0.082
+[RESET] sim_t=100.3s ep_len 501->0
+[RUN] sim_t=105.0s steps=5250 resets=4 reward=0.015
+[RUN] sim_t=110.0s steps=5500 resets=4 reward=0.089
+[RUN] sim_t=115.0s steps=5750 resets=4 reward=0.089
+[RUN] sim_t=120.0s steps=6000 resets=4 reward=0.089
+[RUN] sim_t=125.0s steps=6250 resets=4 reward=0.089
+[RUN] sim_t=130.0s steps=6500 resets=4 reward=0.089
+[RUN] sim_t=135.0s steps=6750 resets=4 reward=0.089
+[RUN] sim_t=140.0s steps=7000 resets=4 reward=0.089
+[RESET] sim_t=140.3s ep_len 1999->0
+[RUN] sim_t=145.0s steps=7250 resets=5 reward=0.093
+[PUSH] t=150.0 dv=5.464 m/s (F=120.0N x 0.5s)
+[RUN] sim_t=150.0s steps=7500 resets=5 reward=0.093
+[RESET] sim_t=150.2s ep_len 494->0
+[RUN] sim_t=155.0s steps=7750 resets=6 reward=0.084
+[RUN] sim_t=160.0s steps=8000 resets=6 reward=0.088
+[RUN] sim_t=165.0s steps=8250 resets=6 reward=0.088
+[RUN] sim_t=170.0s steps=8500 resets=6 reward=0.088
+[RUN] sim_t=175.0s steps=8750 resets=6 reward=0.088
+[RUN] sim_t=180.0s steps=9000 resets=6 reward=0.088
+[RUN] sim_t=185.0s steps=9250 resets=6 reward=0.088
+[RUN] sim_t=190.0s steps=9500 resets=6 reward=0.088
+[RESET] sim_t=190.2s ep_len 1999->0
+[RUN] sim_t=195.0s steps=9750 resets=7 reward=0.085
+[ABL-DONE] tag=b120 t=200 resets=7 eplens=[1999, 513, 1999, 501, 1999, 494, 1999] avg_reward=0.0818
+6:21:14 [11,561ms] [Warning] [omni.usd] Warning: in GetNodeDiscoveryResults at line 136 of /builds/omniverse/usd-ci/USD/pxr/usd/usdShade/shaderDefUtils.cpp -- Unable to resolve info:sourceAsset </UsdPrimvarReader_float.info:mdl:sourceAsset> with value @UsdPreviewSurface.mdl@.
+
+2026-10-25 06:21:14 [11,563ms] [Warning] [omni.usd] Warning: in GetNodeDiscoveryResults at line 136 of /builds/omniverse/usd-ci/USD/pxr/usd/usdShade/shaderDefUtils.cpp -- Unable to resolve info:sourceAsset </UsdPrimvarReader_float2.info:mdl:sourceAsset> with value @UsdPreviewSurface.mdl@.
+
+2026-10-25 06:21:14 [11,565ms] [Warning] [omni.usd] Warning: in GetNodeDiscoveryResults at line 136 of /builds/omniverse/usd-ci/USD/pxr/usd/usdShade/shaderDefUtils.cpp -- Unable to resolve info:sourceAsset </UsdPrimvarReader_float3.info:mdl:sourceAsset> with value @UsdPreviewSurface.mdl@.
+
+2026-10-25 06:21:14 [11,566ms] [Warning] [omni.usd] Warning: in GetNodeDiscoveryResults at line 136 of /builds/omniverse/usd-ci/USD/pxr/usd/usdShade/shaderDefUtils.cpp -- Unable to resolve info:sourceAsset </UsdPrimvarReader_float4.info:mdl:sourceAsset> with value @UsdPreviewSurface.mdl@.
+
+2026-10-25 06:21:14 [11,568ms] [Warning] [omni.usd] Warning: in GetNodeDiscoveryResults at line 136 of /builds/omniverse/usd-ci/USD/pxr/usd/usdShade/shaderDefUtils.cpp -- Unable to resolve info:sourceAsset </UsdPrimvarReader_int.info:mdl:sourceAsset> with value @UsdPreviewSurface.mdl@.
+
+2026-10-25 06:21:14 [11,570ms] [Warning] [omni.usd] Warning: in GetNodeDiscoveryResults at line 136 of /builds/omniverse/usd-ci/USD/pxr/usd/usdShade/shaderDefUtils.cpp -- Unable to resolve info:sourceAsset </UsdPrimvarReader_string.info:mdl:sourceAsset> with value @UsdPreviewSurface.mdl@.
+
+2026-10-25 06:21:14 [11,572ms] [Warning] [omni.usd] Warning: in GetNodeDiscoveryResults at line 136 of /builds/omniverse/usd-ci/USD/pxr/usd/usdShade/shaderDefUtils.cpp -- Unable to resolve info:sourceAsset </UsdPrimvarReader_normal.info:mdl:sourceAsset> with value @UsdPreviewSurface.mdl@.
+
+2026-10-25 06:21:14 [11,573ms] [Warning] [omni.usd] Warning: in GetNodeDiscoveryResults at line 136 of /builds/omniverse/usd-ci/USD/pxr/usd/usdShade/shaderDefUtils.cpp -- Unable to resolve info:sourceAsset </UsdPrimvarReader_point.info:mdl:sourceAsset> with value @UsdPreviewSurface.mdl@.
+
+2026-10-25 06:21:14 [11,575ms] [Warning] [omni.usd] Warning: in GetNodeDiscoveryResults at line 136 of /builds/omniverse/usd-ci/USD/pxr/usd/usdShade/shaderDefUtils.cpp -- Unable to resolve info:sourceAsset </UsdPrimvarReader_vector.info:mdl:sourceAsset> with value @UsdPreviewSurface.mdl@.
+
+2026-10-25 06:21:14 [11,577ms] [Warning] [omni.usd] Warning: in GetNodeDiscoveryResults at line 136 of /builds/omniverse/usd-ci/USD/pxr/usd/usdShade/shaderDefUtils.cpp -- Unable to resolve info:sourceAsset </UsdPrimvarReader_matrix.info:mdl:sourceAsset> with value @UsdPreviewSurface.mdl@.
+
+2026-10-25 06:21:14 [11,579ms] [Warning] [omni.usd] Warning: in GetNodeDiscoveryResults at line 136 of /builds/omniverse/usd-ci/USD/pxr/usd/usdShade/shaderDefUtils.cpp -- Unable to resolve info:sourceAsset </UsdTransform2d.info:mdl:sourceAsset> with value @UsdPreviewSurface.mdl@.
+
+2026-10-25 06:21:14 [11,638ms] [Warning] [isaaclab.envs.mdp.commands.velocity_command] The velocity command has the 'ranges.heading' attribute set to '(-3.141592653589793, 3.141592653589793)' but the heading command is not active. Consider setting the flag for the heading command to True.
+Traceback (most recent call last):
+  File "/home/ubuntu/IsaacLab-2.1.0/source/isaaclab/isaaclab/sim/simulation_context.py", line 219, in <lambda>
+    lambda *args, obj=weakref.proxy(self): obj._app_control_on_stop_handle_fn(*args),
+  File "/home/ubuntu/IsaacLab-2.1.0/source/isaaclab/isaaclab/sim/simulation_context.py", line 743, in _app_control_on_stop_handle_fn
+    self.render()
+  File "/home/ubuntu/IsaacLab-2.1.0/source/isaaclab/isaaclab/sim/simulation_context.py", line 602, in render
+    torch.cuda.set_device(self.device)
+  File "/home/ubuntu/miniconda3/envs/isaaclab/lib/python3.10/site-packages/isaacsim/exts/isaacsim.core.api/isaacsim/core/api/simulation_context/simulation_context.py", line 313, in device
+    return SimulationManager.get_physics_sim_device()
+  File "/home/ubuntu/miniconda3/envs/isaaclab/lib/python3.10/site-packages/isaacsim/exts/isaacsim.core.simulation_manager/isaacsim/core/simulation_manager/impl/simulation_manager.py", line 186, in get_physics_sim_device
+    and SimulationManager.is_gpu_dynamics_enabled()
+  File "/home/ubuntu/miniconda3/envs/isaaclab/lib/python3.10/site-packages/isaacsim/exts/isaacsim.core.simulation_manager/isaacsim/core/simulation_manager/impl/simulation_manager.py", line 327, in is_gpu_dynamics_enabled
+    return physx_scene_api.GetEnableGPUDynamicsAttr().Get()
+  File "/home/ubuntu/Mini-Pi-Plus_AMP/legged_lab/scripts/ablation_log.py", line 153, in signal_handler
+    sys.exit(0)
+  File "/home/ubuntu/miniconda3/envs/isaaclab/lib/python3.10/site-packages/omni/kernel/py/omni/kit/app/_impl/__init__.py", line 301, in kit_exit
+    sys._exit_orig(status)
+SystemExit: 0
+2026-10-25 06:36:01 [898,604ms] [Warning] [omni.usd] Unexpected reference count of 2 for UsdStage 'anon:0x563b841c9600:World0.usd' while being closed in UsdContext (this may indicate it is still resident in memory).
