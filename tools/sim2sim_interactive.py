@@ -189,7 +189,29 @@ class InteractiveRunner:
                 self.viewer.cam.azimuth = 135.0
                 self.viewer.cam.elevation = -25.0
 
-        while self.data.time < duration and not exit_flag:
+        # ── 渲染线程 ──
+        # viewer.render() 内部调 glfw.poll_events + swap_buffers，
+        # 在 1050 Ti 上偶发 30-60ms 尖刺（vsync/驱动），同步调用会把整个
+        # 控制循环拖慢 + 键盘回调（在 poll_events 里）也被阻塞。
+        # 放到独立线程后：控制循环稳定 50Hz；渲染尽力而为不拖后腿；
+        # 键盘回调在渲染线程的 poll_events 里执行，不再积压。
+        self._render_stop = threading.Event()
+        self._closed_by_user = False
+
+        def render_loop():
+            while not self._render_stop.is_set():
+                try:
+                    self.viewer.render()
+                except Exception:
+                    self._closed_by_user = True
+                    self._render_stop.set()
+                    return
+                time.sleep(0.005)
+
+        rt = threading.Thread(target=render_loop, daemon=True)
+        rt.start()
+
+        while self.data.time < duration and not exit_flag and not self._render_stop.is_set():
             step_start = time.time()
             obs = self.get_obs()
             with torch.no_grad():
@@ -202,22 +224,11 @@ class InteractiveRunner:
                                  np.zeros_like(self.kds), self.data.qvel[6:], self.kds)
                 self.data.ctrl = tau
                 mujoco.mj_step(self.model, self.data)
-            # 每个控制步渲染一次（50Hz）。旧版在 decimation 内渲染 = 500 次/秒，
-            # 被 vsync 阻塞后仿真掉到 1/8 实时速度且周期性卡顿——这是卡停主因
-            if self._step_idx % self.render_every == 0:
-                try:
-                    self.viewer.render()
-                except Exception:
-                    # 用户点了窗口右上角 X：窗口已销毁，剩余渲染无意义。
-                    # 优雅退出，不抛 traceback（否则看起来像"程序崩了"）。
-                    print("\n[viewer] 窗口已关闭，退出仿真", flush=True)
-                    self._closed_by_user = True
-                    break
-            self._step_idx += 1
             if self.realtime:
                 remain = self.dt - (time.time() - step_start)
                 if remain > 0:
                     time.sleep(remain)
+        self._render_stop.set()
         if not getattr(self, "_closed_by_user", False) and not exit_flag:
             print(f"[done] 仿真时长 {duration:.0f}s 已跑完（正常结束，不是崩溃）", flush=True)
         print()
