@@ -336,7 +336,23 @@ if __name__ == "__main__":
         sys.exit(f"[ERROR] 模型不存在: {args.model}")
     cfg = SimToSimCfg()
     cfg.sim.sim_duration = args.duration
-    InteractiveRunner(cfg, args.policy, args.model,
-                      realtime=not args.maxspeed,
-                      render_size=args.render_size,
-                      render_every=args.render_every).run(args.duration)
+    # 顶层兜底：任何未捕获异常都写 run_error.log 并暂停，避免窗口一闪而过看不到原因
+    try:
+        InteractiveRunner(cfg, args.policy, args.model,
+                          realtime=not args.maxspeed,
+                          render_size=args.render_size,
+                          render_every=args.render_every).run(args.duration)
+    except Exception:
+        import traceback
+        err_path = os.path.join(ROOT_DIR, "run_error.log")
+        with open(err_path, "w", encoding="utf-8") as f:
+            f.write("参数: " + " ".join(sys.argv[1:]) + "\n\n")
+            traceback.print_exc(file=f)
+        print("\n[ERROR] 程序异常，详情已写入:", err_path, flush=True)
+        traceback.print_exc()
+    finally:
+        # 双击 bat 时防止窗口立刻关闭，留时间看报错
+        try:
+            input("\n按回车键退出...")
+        except Exception:
+            pass
