@@ -189,29 +189,14 @@ class InteractiveRunner:
                 self.viewer.cam.azimuth = 135.0
                 self.viewer.cam.elevation = -25.0
 
-        # ── 渲染线程 ──
-        # viewer.render() 内部调 glfw.poll_events + swap_buffers，
-        # 在 1050 Ti 上偶发 30-60ms 尖刺（vsync/驱动），同步调用会把整个
-        # 控制循环拖慢 + 键盘回调（在 poll_events 里）也被阻塞。
-        # 放到独立线程后：控制循环稳定 50Hz；渲染尽力而为不拖后腿；
-        # 键盘回调在渲染线程的 poll_events 里执行，不再积压。
-        self._render_stop = threading.Event()
+        # 渲染在主线程做（GLFW 窗口消息泵必须在创建线程里，搬线程会"未响应"）。
+        # 通过 render_every 降频来控制渲染开销：默认 2 = 25fps（够流畅，不卡控制循环）。
+        self._step_idx = 0
         self._closed_by_user = False
+        if self.render_every < 2:
+            self.render_every = 2  # 最低 25fps；50fps 渲染在 1050Ti 上会偶发尖刺
 
-        def render_loop():
-            while not self._render_stop.is_set():
-                try:
-                    self.viewer.render()
-                except Exception:
-                    self._closed_by_user = True
-                    self._render_stop.set()
-                    return
-                time.sleep(0.005)
-
-        rt = threading.Thread(target=render_loop, daemon=True)
-        rt.start()
-
-        while self.data.time < duration and not exit_flag and not self._render_stop.is_set():
+        while self.data.time < duration and not exit_flag:
             step_start = time.time()
             obs = self.get_obs()
             with torch.no_grad():
@@ -224,11 +209,21 @@ class InteractiveRunner:
                                  np.zeros_like(self.kds), self.data.qvel[6:], self.kds)
                 self.data.ctrl = tau
                 mujoco.mj_step(self.model, self.data)
+            # 降频渲染：每 render_every 步渲染一次（默认 2 = 25fps）。
+            # 50fps 渲染在 1050Ti 上偶发 30-60ms 尖刺（vsync），会把控制循环
+            # 从 50Hz 拖到 30Hz 且按键延迟 → 渲染放主线程但降频。
+            if self._step_idx % self.render_every == 0:
+                try:
+                    self.viewer.render()
+                except Exception:
+                    print("\n[viewer] 窗口已关闭，退出仿真", flush=True)
+                    self._closed_by_user = True
+                    break
+            self._step_idx += 1
             if self.realtime:
                 remain = self.dt - (time.time() - step_start)
                 if remain > 0:
                     time.sleep(remain)
-        self._render_stop.set()
         if not getattr(self, "_closed_by_user", False) and not exit_flag:
             print(f"[done] 仿真时长 {duration:.0f}s 已跑完（正常结束，不是崩溃）", flush=True)
         print()
@@ -339,10 +334,10 @@ if __name__ == "__main__":
                         help="仿真时长上限（秒），默认 1 小时；体验时不用管")
     parser.add_argument("--maxspeed", action="store_true",
                         help="关闭实时节拍，仿真全速运行（做基准测试用）")
-    parser.add_argument("--render-size", type=int, default=640,
-                        help="窗口渲染分辨率宽度（默认 640，卡顿时降到 480）")
-    parser.add_argument("--render-every", type=int, default=1,
-                        help="每 N 个控制步渲染一次（默认 1=50fps，卡顿时设 2=25fps）")
+    parser.add_argument("--render-size", type=int, default=480,
+                        help="窗口渲染分辨率宽度（默认 480；640 在 1050Ti 上不够流畅）")
+    parser.add_argument("--render-every", type=int, default=3,
+                        help="每 N 个控制步渲染一次（默认 3 ≈ 17fps，实测 83% 实时；1=50fps 在 1050Ti 上会卡顿）")
     args = parser.parse_args()
     if not os.path.isfile(args.policy):
         sys.exit(f"[ERROR] 策略不存在: {args.policy}（先跑 python tools/export_policy.py）")
