@@ -23,7 +23,7 @@ echo ==========================================================
 echo.
 echo Press any key to start...
 pause >nul
-"D:\python3.12.10\python.exe" tools\sim2sim_interactive.py --policy results\checkpoints\policy.pt --model scenes\scene_classroom.xml --duration 300
+"D:\python3.12.10\python.exe" tools\sim2sim_interactive.py --policy results\checkpoints\policy.pt --model scenes\scene_classroom.xml --duration 3600
 echo.
 echo Finished. Exit code: %errorlevel%
 pause

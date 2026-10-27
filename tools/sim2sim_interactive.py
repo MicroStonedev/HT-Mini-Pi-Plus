@@ -218,6 +218,8 @@ class InteractiveRunner:
                 remain = self.dt - (time.time() - step_start)
                 if remain > 0:
                     time.sleep(remain)
+        if not getattr(self, "_closed_by_user", False) and not exit_flag:
+            print(f"[done] 仿真时长 {duration:.0f}s 已跑完（正常结束，不是崩溃）", flush=True)
         print()
         if getattr(self, "listener", None) is not None:
             self.listener.stop()
@@ -322,7 +324,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="交互版 sim2sim（键盘可控）")
     parser.add_argument("--policy", default=DEFAULT_POLICY)
     parser.add_argument("--model", default=DEFAULT_MODEL)
-    parser.add_argument("--duration", type=float, default=60.0)
+    parser.add_argument("--duration", type=float, default=3600.0,
+                        help="仿真时长上限（秒），默认 1 小时；体验时不用管")
     parser.add_argument("--maxspeed", action="store_true",
                         help="关闭实时节拍，仿真全速运行（做基准测试用）")
     parser.add_argument("--render-size", type=int, default=640,
