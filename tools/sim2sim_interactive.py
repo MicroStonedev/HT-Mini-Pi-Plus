@@ -178,7 +178,14 @@ class InteractiveRunner:
             # 每个控制步渲染一次（50Hz）。旧版在 decimation 内渲染 = 500 次/秒，
             # 被 vsync 阻塞后仿真掉到 1/8 实时速度且周期性卡顿——这是卡停主因
             if self._step_idx % self.render_every == 0:
-                self.viewer.render()
+                try:
+                    self.viewer.render()
+                except Exception:
+                    # 用户点了窗口右上角 X：窗口已销毁，剩余渲染无意义。
+                    # 优雅退出，不抛 traceback（否则看起来像"程序崩了"）。
+                    print("\n[viewer] 窗口已关闭，退出仿真", flush=True)
+                    self._closed_by_user = True
+                    break
             self._step_idx += 1
             if self.realtime:
                 remain = self.dt - (time.time() - step_start)
@@ -186,7 +193,11 @@ class InteractiveRunner:
                     time.sleep(remain)
         print()
         self.listener.stop()
-        self.viewer.close()
+        try:
+            if not getattr(self, "_closed_by_user", False):
+                self.viewer.close()
+        except Exception:
+            pass
 
     def start_keyboard_listener(self):
         def on_press(key):
