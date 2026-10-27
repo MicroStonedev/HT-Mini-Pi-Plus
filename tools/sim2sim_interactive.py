@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import argparse
 import ctypes
+import faulthandler
 import os
 import sys
 import threading
@@ -35,6 +36,14 @@ if sys.platform == "win32":
         ctypes.windll.winmm.timeBeginPeriod(1)
     except Exception:
         pass
+
+# native 段错误(窗口闪退)会写进 crash.log，便于事后定位
+try:
+    _CRASH_LOG = open(os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                                   "crash.log"), "w", buffering=1)
+    faulthandler.enable(_CRASH_LOG)
+except Exception:
+    pass
 
 # MuJoCo MjvCamera.type 的取值（C 宏，Python 未导出）
 CAM_FREE, CAM_TRACKING, CAM_FIXED = 0, 1, 2
@@ -210,7 +219,8 @@ class InteractiveRunner:
                 if remain > 0:
                     time.sleep(remain)
         print()
-        self.listener.stop()
+        if getattr(self, "listener", None) is not None:
+            self.listener.stop()
         try:
             if not getattr(self, "_closed_by_user", False):
                 self.viewer.close()
@@ -218,45 +228,62 @@ class InteractiveRunner:
             pass
 
     def start_keyboard_listener(self):
-        def on_press(key):
+        """用 GLFW 原生键盘回调（与窗口焦点同步、不受中文输入法影响）。
+
+        旧实现用 pynput 全局钩子，实测在中文输入法下会漏键：
+        空格能收到、W 收不到。GLFW 回调直接来自窗口，是 MuJoCo 官方 demo 的做法。
+        """
+        global x_vel_cmd, y_vel_cmd, yaw_vel_cmd, exit_flag
+        try:
+            import glfw
+        except Exception:
+            print("[warn] glfw 不可用，键盘控制禁用", flush=True)
+            self.listener = None
+            return
+
+        K = {
+            "W": glfw.KEY_W, "S": glfw.KEY_S, "A": glfw.KEY_A, "D": glfw.KEY_D,
+            "Q": glfw.KEY_Q, "E": glfw.KEY_E,
+            "8": glfw.KEY_8, "2": glfw.KEY_2, "4": glfw.KEY_4,
+            "6": glfw.KEY_6, "7": glfw.KEY_7, "9": glfw.KEY_9, "5": glfw.KEY_5,
+            "SPACE": glfw.KEY_SPACE, "TAB": glfw.KEY_TAB, "ESC": glfw.KEY_ESCAPE,
+        }
+
+        def on_key(window, key, scancode, action, mods):
             global x_vel_cmd, y_vel_cmd, yaw_vel_cmd, exit_flag
-            # char 与 vk 同时判断（取并集）：中文输入法会让 char 变成 None/汉字，
-            # 而某些后端下 KeyCode 的 vk 也可能为 None —— 只用一种会漏键。
-            char = getattr(key, "char", None)
-            c = char.lower() if isinstance(char, str) and len(char) == 1 else None
-            vk = getattr(key, "vk", None)
-            if key == keyboard.Key.esc:
+            if action not in (glfw.PRESS, glfw.REPEAT):
+                return
+            if key == K["ESC"]:
                 exit_flag = True
                 print("\n[cmd] 退出", flush=True)
                 return
-            if key == keyboard.Key.tab:
+            if key == K["TAB"]:
                 self.cycle_camera()
                 return
-            if key == keyboard.Key.space:
+            if key in (K["SPACE"], K["5"]):
                 x_vel_cmd = y_vel_cmd = yaw_vel_cmd = 0.0
                 print("\n[cmd] 速度已清零", flush=True)
                 return
-            # 数字键的 char 在中文输入法下会被吞，用 ASCII 码兜底（'8'=56, '2'=50 ...）
-            if c in ("w", "\x08") or vk in (87,) or char == "8" or char == "\x08":
+            if key in (K["W"], K["8"]):
                 x_vel_cmd = float(np.clip(x_vel_cmd + 0.2, -CMD_MAX[0], CMD_MAX[0]))
-            elif c == "s" or vk in (83,) or char == "2":
+            elif key in (K["S"], K["2"]):
                 x_vel_cmd = float(np.clip(x_vel_cmd - 0.2, -CMD_MAX[0], CMD_MAX[0]))
-            elif c == "a" or vk in (65,) or char == "4":
+            elif key in (K["A"], K["4"]):
                 y_vel_cmd = float(np.clip(y_vel_cmd - 0.2, -CMD_MAX[1], CMD_MAX[1]))
-            elif c == "d" or vk in (68,) or char == "6":
+            elif key in (K["D"], K["6"]):
                 y_vel_cmd = float(np.clip(y_vel_cmd + 0.2, -CMD_MAX[1], CMD_MAX[1]))
-            elif c == "q" or vk in (81,) or char == "7":
+            elif key in (K["Q"], K["7"]):
                 yaw_vel_cmd = float(np.clip(yaw_vel_cmd - 0.2, -CMD_MAX[2], CMD_MAX[2]))
-            elif c == "e" or vk in (69,) or char == "9":
+            elif key in (K["E"], K["9"]):
                 yaw_vel_cmd = float(np.clip(yaw_vel_cmd + 0.2, -CMD_MAX[2], CMD_MAX[2]))
             else:
-                # 其它键打印出来，便于排查"按键没反应"到底收到了什么
-                if char is not None or vk is not None:
-                    print(f"\n[dbg] 未识别按键 char={char!r} vk={vk!r}", flush=True)
                 return
             print(f"\n[cmd] vx={x_vel_cmd:+.2f} vy={y_vel_cmd:+.2f} yaw={yaw_vel_cmd:+.2f}", flush=True)
-        self.listener = keyboard.Listener(on_press=on_press)
-        self.listener.start()
+
+        glfw.set_key_callback(self.viewer.window, on_key)
+        self.listener = None
+        print("[key] GLFW 键盘已启用：W/S 前后 A/D 平移 Q/E 转向 空格停 Tab 切视角 Esc 退出",
+              flush=True)
 
     def cycle_camera(self) -> None:
         """Tab 循环切机位（旧版 2/4 与速度键冲突，改用单键循环）。"""
