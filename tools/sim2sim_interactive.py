@@ -106,6 +106,24 @@ class InteractiveRunner:
         self.data = mujoco.MjData(self.model)
         self.viewer = mujoco_viewer.MujocoViewer(self.model, self.data)
         self.viewer._render_every_frame = False
+        # mujoco_viewer 自带一整套快捷键，会抢走 W/A/S/D/Q/E 之外的键：
+        #   空格=暂停仿真(不是"站住")、S=仿真速度减半、D=切渲染、E=空分支吞键、
+        #   Tab=它自己切相机、R=透明模式(物体只剩线框)。全部禁用，交给 pynput。
+        try:
+            import glfw
+            glfw.set_key_callback(self.viewer.window, lambda *a, **k: None)
+        except Exception:
+            pass
+        # 透明模式若被意外打开，画面会只剩骨架，这里强制关掉
+        if getattr(self.viewer, "_transparent", False):
+            self.viewer._transparent = False
+        # 线框渲染标志强制关闭 + 打开阴影（否则场景看起来像只有框架）
+        try:
+            scn = self.viewer.scn
+            scn.flags[mujoco.mjtRndFlag.mjRND_WIREFRAME] = 0
+            scn.flags[mujoco.mjtRndFlag.mjRND_SHADOW] = 1
+        except Exception:
+            pass
         self.init_variables()
         self.data.qpos[7:] = self.default_dof_pos.copy()
         self.data.qvel[6:] = np.zeros_like(self.data.qvel[6:])
@@ -202,7 +220,10 @@ class InteractiveRunner:
     def start_keyboard_listener(self):
         def on_press(key):
             global x_vel_cmd, y_vel_cmd, yaw_vel_cmd, exit_flag
-            # 用虚拟键码(vk)判断：中文输入法会把数字键的 char 吞成 None/汉字
+            # char 与 vk 同时判断（取并集）：中文输入法会让 char 变成 None/汉字，
+            # 而某些后端下 KeyCode 的 vk 也可能为 None —— 只用一种会漏键。
+            char = getattr(key, "char", None)
+            c = char.lower() if isinstance(char, str) and len(char) == 1 else None
             vk = getattr(key, "vk", None)
             if key == keyboard.Key.esc:
                 exit_flag = True
@@ -215,19 +236,23 @@ class InteractiveRunner:
                 x_vel_cmd = y_vel_cmd = yaw_vel_cmd = 0.0
                 print("\n[cmd] 速度已清零", flush=True)
                 return
-            if vk in (87, 56):          # W / 8
+            # 数字键的 char 在中文输入法下会被吞，用 ASCII 码兜底（'8'=56, '2'=50 ...）
+            if c in ("w", "\x08") or vk in (87,) or char == "8" or char == "\x08":
                 x_vel_cmd = float(np.clip(x_vel_cmd + 0.2, -CMD_MAX[0], CMD_MAX[0]))
-            elif vk in (83, 50):        # S / 2
+            elif c == "s" or vk in (83,) or char == "2":
                 x_vel_cmd = float(np.clip(x_vel_cmd - 0.2, -CMD_MAX[0], CMD_MAX[0]))
-            elif vk in (65, 52):        # A / 4
+            elif c == "a" or vk in (65,) or char == "4":
                 y_vel_cmd = float(np.clip(y_vel_cmd - 0.2, -CMD_MAX[1], CMD_MAX[1]))
-            elif vk in (68, 54):        # D / 6
+            elif c == "d" or vk in (68,) or char == "6":
                 y_vel_cmd = float(np.clip(y_vel_cmd + 0.2, -CMD_MAX[1], CMD_MAX[1]))
-            elif vk in (81, 55):        # Q / 7
+            elif c == "q" or vk in (81,) or char == "7":
                 yaw_vel_cmd = float(np.clip(yaw_vel_cmd - 0.2, -CMD_MAX[2], CMD_MAX[2]))
-            elif vk in (69, 57):        # E / 9
+            elif c == "e" or vk in (69,) or char == "9":
                 yaw_vel_cmd = float(np.clip(yaw_vel_cmd + 0.2, -CMD_MAX[2], CMD_MAX[2]))
             else:
+                # 其它键打印出来，便于排查"按键没反应"到底收到了什么
+                if char is not None or vk is not None:
+                    print(f"\n[dbg] 未识别按键 char={char!r} vk={vk!r}", flush=True)
                 return
             print(f"\n[cmd] vx={x_vel_cmd:+.2f} vy={y_vel_cmd:+.2f} yaw={yaw_vel_cmd:+.2f}", flush=True)
         self.listener = keyboard.Listener(on_press=on_press)
