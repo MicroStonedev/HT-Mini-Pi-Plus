@@ -6,6 +6,21 @@ THU SIGS AIID × 高擎机电 方向二（强化学习运控与 Sim2Real，主�
 
 ## 快速开始
 
+### 第 0 步：获取官方机器人资源（必须，约 33 MB）
+
+`third_party/` 未纳入本仓库（体积 + 上游版权），首次使用需手动拉取：
+
+```bash
+git clone --depth 1 https://github.com/HighTorque-Robotics/Mini-Pi-Plus_AMP.git third_party/Mini-Pi-Plus_AMP
+```
+
+教室场景 `scenes/scene_classroom.xml` 里引用 `../third_party/.../meshes/*.STL`，
+**跳过这步会报"找不到 mesh"**。若只想跑平地场景，仍需这些 STL。
+
+> 群核原始点云（`classroom_raw.ply` 105 MB）同样不在仓库：场景 XML 已包含其全部
+> 提取结果（房间尺寸、地面高度、地板色、家具包围盒），**跑场景不需要原始点云**。
+> 需要重新生成场景时才要找原始 PLY（见下方第 5 步）。
+
 ```bash
 # 依赖：Python 3.10+，已装 mujoco==3.3.2 / torch(CPU) / trimesh / fast-simplification / matplotlib / mujoco-python-viewer / pynput / pygame
 
@@ -58,6 +73,19 @@ DEMO_PLAN_KICKOFF.md       # 启动阶段 demo 方案（当前）
 DEMO_PLAN_1DAY.md          # 真机部署冲刺方案（后续阶段）
 DEMO_PLAN.md               # 两周完整计划（参考）
 ```
+
+## 场景与数据文件清单
+
+| 文件 | 入库 | 说明 |
+|---|---|---|
+| `scenes/scene_classroom.xml` | ✅ | MuJoCo 教室场景（40 KB）：房间 9.4×8.8 m、25 张课桌、讲台、黑板、边界墙、4 机位 |
+| `scenes/scene_classroom.obj` | ✅ | 地板/墙面视觉网格（125 KB） |
+| `scenes/scene_synthetic.xml` | ✅ | 合成教室保底场景，无外部依赖 |
+| `tools/scene_builder.py` | ✅ | 点云 → 场景构建脚本 |
+| `results/plots/scene_check_top.png` | ✅ | 场景俯视检查图 |
+| `third_party/Mini-Pi-Plus_AMP/` | ❌ | 官方仓库（33 MB，含机器人 40 个 STL）—— 见第 0 步 |
+| `scenes/classroom_raw.ply` | ❌ | 群核原始点云 105 MB（版权 + 体积）；场景 XML 已含提取结果，跑场景不需要它 |
+| `scenes/classroom.splat.spz` | ❌ | 3DGS 模型文件 28.6 MB，同上 |
 
 ## 教室场景数据说明（重要，直接影响 PPT 怎么讲）
 
