@@ -289,6 +289,20 @@ class InteractiveRunner:
             print(f"\n[cmd] vx={x_vel_cmd:+.2f} vy={y_vel_cmd:+.2f} yaw={yaw_vel_cmd:+.2f}", flush=True)
 
         glfw.set_key_callback(self.viewer.window, on_key)
+        # 打印实际渲染显卡：NVIDIA Optimus 笔记本默认会用 Intel 核显，
+        # 核显渲染 MuJoCo 会卡到不可用（需在 Windows 图形设置里指定 python.exe 用高性能）。
+        try:
+            renderer = glfw.get_window_attrib
+            import OpenGL.GL as _gl
+            _name = _gl.glGetString(_gl.GL_RENDERER).decode(errors="ignore")
+            if "Intel" in _name or "llvmpipe" in _name or "Microsoft Basic" in _name:
+                print(f"[warn] 当前使用 {_name}（核显/软件渲染）——画面会卡、鼠标会迟钝。", flush=True)
+                print("       修复：Windows 设置 → 系统 → 显示 → 图形设置 → 浏览到 python.exe → 选项 → 高性能",
+                      flush=True)
+            else:
+                print(f"[gpu] 渲染显卡: {_name}", flush=True)
+        except Exception:
+            pass
         self.listener = None
         print("[key] GLFW 键盘已启用：W/S 前后 A/D 平移 Q/E 转向 空格停 Tab 切视角 Esc 退出",
               flush=True)
