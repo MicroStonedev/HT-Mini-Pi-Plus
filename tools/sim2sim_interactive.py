@@ -115,6 +115,8 @@ class InteractiveRunner:
         self.data = mujoco.MjData(self.model)
         self.viewer = mujoco_viewer.MujocoViewer(self.model, self.data)
         self.viewer._render_every_frame = False
+        # 关闭左上/左下的信息叠加面板（FPS/时间/警告），避免遮挡机器人和课桌
+        self.viewer._hide_menus = True
         # mujoco_viewer 自带一整套快捷键，会抢走 W/A/S/D/Q/E 之外的键：
         #   空格=暂停仿真(不是"站住")、S=仿真速度减半、D=切渲染、E=空分支吞键、
         #   Tab=它自己切相机、R=透明模式(物体只剩线框)。全部禁用，交给 pynput。
@@ -193,8 +195,6 @@ class InteractiveRunner:
         # 通过 render_every 降频来控制渲染开销：默认 2 = 25fps（够流畅，不卡控制循环）。
         self._step_idx = 0
         self._closed_by_user = False
-        if self.render_every < 2:
-            self.render_every = 2  # 最低 25fps；50fps 渲染在 1050Ti 上会偶发尖刺
 
         while self.data.time < duration and not exit_flag:
             step_start = time.time()
@@ -255,6 +255,7 @@ class InteractiveRunner:
             "8": glfw.KEY_8, "2": glfw.KEY_2, "4": glfw.KEY_4,
             "6": glfw.KEY_6, "7": glfw.KEY_7, "9": glfw.KEY_9, "5": glfw.KEY_5,
             "SPACE": glfw.KEY_SPACE, "TAB": glfw.KEY_TAB, "ESC": glfw.KEY_ESCAPE,
+            "H": glfw.KEY_H,
         }
 
         def on_key(window, key, scancode, action, mods):
@@ -267,6 +268,11 @@ class InteractiveRunner:
                 return
             if key == K["TAB"]:
                 self.cycle_camera()
+                return
+            if key == K["H"]:
+                self.viewer._hide_menus = not self.viewer._hide_menus
+                state = "已隐藏" if self.viewer._hide_menus else "已显示"
+                print(f"\n[ui] 信息面板{state}", flush=True)
                 return
             if key in (K["SPACE"], K["5"]):
                 x_vel_cmd = y_vel_cmd = yaw_vel_cmd = 0.0
@@ -348,10 +354,10 @@ if __name__ == "__main__":
                         help="仿真时长上限（秒），默认 1 小时；体验时不用管")
     parser.add_argument("--maxspeed", action="store_true",
                         help="关闭实时节拍，仿真全速运行（做基准测试用）")
-    parser.add_argument("--render-size", type=int, default=480,
-                        help="窗口渲染分辨率宽度（默认 480；640 在 1050Ti 上不够流畅）")
-    parser.add_argument("--render-every", type=int, default=3,
-                        help="每 N 个控制步渲染一次（默认 3 ≈ 17fps，实测 83% 实时；1=50fps 在 1050Ti 上会卡顿）")
+    parser.add_argument("--render-size", type=int, default=640,
+                        help="窗口渲染分辨率宽度（默认 640，独显下 50fps 可达 90%% 实时）")
+    parser.add_argument("--render-every", type=int, default=1,
+                        help="每 N 个控制步渲染一次（1=50fps 最流畅；卡顿时设 2）")
     args = parser.parse_args()
     if not os.path.isfile(args.policy):
         sys.exit(f"[ERROR] 策略不存在: {args.policy}（先跑 python tools/export_policy.py）")
