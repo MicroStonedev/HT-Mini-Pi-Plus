@@ -9,13 +9,14 @@ echo   EXPERIENCE 1: Self-trained policy in a classroom
 echo   (trained by us: 15000 iterations in Isaac Sim)
 echo ==========================================================
 echo.
-echo   CONTROLS:
-echo     8 / 2   forward faster / slower
-echo     4 / 6   sidestep left / right
-echo     7 / 9   turn left / right
-echo     5       stop
-echo     1 - 4   switch camera view
-echo     Esc     quit
+echo   STEP 1: CLICK INSIDE THE WINDOW (keyboard needs focus!)
+echo.
+echo   W / S   forward faster / slower   (also 8 / 2)
+echo   A / D   sidestep left / right     (also 4 / 6)
+echo   Q / E   turn left / right         (also 7 / 9)
+echo   SPACE   stop                      (also 5)
+echo   TAB     cycle camera view
+echo   Esc     quit
 echo.
 echo   MOUSE: left-drag rotate, wheel zoom, right-drag pan
 echo ==========================================================

@@ -19,6 +19,7 @@
 from __future__ import annotations
 
 import argparse
+import ctypes
 import os
 import sys
 import threading
@@ -26,6 +27,14 @@ import time
 
 import mujoco
 import mujoco_viewer
+
+# Windows 默认 sleep 精度只有 15.6ms：实时节拍每步只需睡 ~11ms，
+# 不提升精度会让控制循环掉到 ~42Hz 且节奏呈锯齿（画面一顿一顿）。
+if sys.platform == "win32":
+    try:
+        ctypes.windll.winmm.timeBeginPeriod(1)
+    except Exception:
+        pass
 
 # MuJoCo MjvCamera.type 的取值（C 宏，Python 未导出）
 CAM_FREE, CAM_TRACKING, CAM_FIXED = 0, 1, 2
@@ -182,27 +191,52 @@ class InteractiveRunner:
     def start_keyboard_listener(self):
         def on_press(key):
             global x_vel_cmd, y_vel_cmd, yaw_vel_cmd, exit_flag
-            char = getattr(key, "char", None)
-            if char in ("8", "2"):
-                x_vel_cmd = float(np.clip(x_vel_cmd + 0.2 * (1 if char == "8" else -1), -CMD_MAX[0], CMD_MAX[0]))
-            elif char in ("4", "6"):
-                y_vel_cmd = float(np.clip(y_vel_cmd + 0.2 * (-1 if char == "4" else 1), -CMD_MAX[1], CMD_MAX[1]))
-            elif char in ("7", "9"):
-                yaw_vel_cmd = float(np.clip(yaw_vel_cmd + 0.2 * (-1 if char == "7" else 1), -CMD_MAX[2], CMD_MAX[2]))
-            elif char == "5":
-                x_vel_cmd = y_vel_cmd = yaw_vel_cmd = 0.0
-                print("\n[cmd] 速度已清零")
-            elif key == keyboard.Key.esc:
+            # 用虚拟键码(vk)判断：中文输入法会把数字键的 char 吞成 None/汉字
+            vk = getattr(key, "vk", None)
+            if key == keyboard.Key.esc:
                 exit_flag = True
-                print("\n[cmd] 退出")
-            elif char in ("0", "1", "2", "3", "4"):
-                self.switch_camera(char)
+                print("\n[cmd] 退出", flush=True)
                 return
+            if key == keyboard.Key.tab:
+                self.cycle_camera()
+                return
+            if key == keyboard.Key.space:
+                x_vel_cmd = y_vel_cmd = yaw_vel_cmd = 0.0
+                print("\n[cmd] 速度已清零", flush=True)
+                return
+            if vk in (87, 56):          # W / 8
+                x_vel_cmd = float(np.clip(x_vel_cmd + 0.2, -CMD_MAX[0], CMD_MAX[0]))
+            elif vk in (83, 50):        # S / 2
+                x_vel_cmd = float(np.clip(x_vel_cmd - 0.2, -CMD_MAX[0], CMD_MAX[0]))
+            elif vk in (65, 52):        # A / 4
+                y_vel_cmd = float(np.clip(y_vel_cmd - 0.2, -CMD_MAX[1], CMD_MAX[1]))
+            elif vk in (68, 54):        # D / 6
+                y_vel_cmd = float(np.clip(y_vel_cmd + 0.2, -CMD_MAX[1], CMD_MAX[1]))
+            elif vk in (81, 55):        # Q / 7
+                yaw_vel_cmd = float(np.clip(yaw_vel_cmd - 0.2, -CMD_MAX[2], CMD_MAX[2]))
+            elif vk in (69, 57):        # E / 9
+                yaw_vel_cmd = float(np.clip(yaw_vel_cmd + 0.2, -CMD_MAX[2], CMD_MAX[2]))
             else:
                 return
-            print(f"\n[cmd] vx={x_vel_cmd:+.2f} vy={y_vel_cmd:+.2f} yaw={yaw_vel_cmd:+.2f}")
+            print(f"\n[cmd] vx={x_vel_cmd:+.2f} vy={y_vel_cmd:+.2f} yaw={yaw_vel_cmd:+.2f}", flush=True)
         self.listener = keyboard.Listener(on_press=on_press)
         self.listener.start()
+
+    def cycle_camera(self) -> None:
+        """Tab 循环切机位（旧版 2/4 与速度键冲突，改用单键循环）。"""
+        if not hasattr(self, "_cam_cycle"):
+            self._cam_cycle = 0
+        names = ["overview", "walker", "side", "top"]
+        name = names[self._cam_cycle % len(names)]
+        self._cam_cycle += 1
+        cid = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_CAMERA, name)
+        if cid < 0:
+            self.viewer.cam.type = CAM_FREE
+            print(f"\n[cam] 场景无 {name}，切到自由视角（鼠标拖动）", flush=True)
+        else:
+            self.viewer.cam.type = CAM_FIXED
+            self.viewer.cam.fixedcamid = cid
+            print(f"\n[cam] 机位 → {name}", flush=True)
 
     def switch_camera(self, key: str) -> None:
         """切换视角：0 自由视角（鼠标拖动）/ 1-4 场景 XML 内置相机。"""

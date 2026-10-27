@@ -9,8 +9,9 @@ echo   EXPERIENCE 2: OFFICIAL policy in a classroom (control)
 echo   (provided by HighTorque: 40000 iterations)
 echo ==========================================================
 echo.
-echo   Same controls as Experience 1:
-echo     8/2 forward   4/6 sidestep   7/9 turn   5 stop   1-4 camera
+echo   STEP 1: CLICK INSIDE THE WINDOW (keyboard needs focus!)
+echo.
+echo   W/S forward   A/D sidestep   Q/E turn   SPACE stop   TAB camera
 echo ==========================================================
 echo.
 echo Press any key to start...
