@@ -82,11 +82,17 @@ def quat_apply_inverse(q: np.ndarray, v: np.ndarray) -> np.ndarray:
 
 
 class InteractiveRunner:
-    def __init__(self, cfg, policy_path, model_path, realtime=True):
+    def __init__(self, cfg, policy_path, model_path, realtime=True, render_size=640,
+                 render_every=1):
         self.cfg = cfg
         self.realtime = realtime
+        self.render_every = max(1, int(render_every))
         self.model = mujoco.MjModel.from_xml_path(model_path)
         self.model.opt.timestep = self.cfg.sim.dt
+        # 窗口渲染分辨率：场景 XML 里的 offwidth（录屏用的高清缓冲）对交互是负担，
+        # mujoco_viewer 每帧要把整个缓冲从 GPU 拷回 CPU，1280x960 会明显掉帧。
+        self.model.vis.global_.offwidth = int(render_size)
+        self.model.vis.global_.offheight = int(render_size * 3 // 4)
         self.policy = load_policy(policy_path)
         self.data = mujoco.MjData(self.model)
         self.viewer = mujoco_viewer.MujocoViewer(self.model, self.data)
@@ -127,6 +133,7 @@ class InteractiveRunner:
 
     def run(self, duration):
         global exit_flag
+        self._step_idx = 0
         self.start_keyboard_listener()
 
         def heartbeat():
@@ -161,7 +168,9 @@ class InteractiveRunner:
                 mujoco.mj_step(self.model, self.data)
             # 每个控制步渲染一次（50Hz）。旧版在 decimation 内渲染 = 500 次/秒，
             # 被 vsync 阻塞后仿真掉到 1/8 实时速度且周期性卡顿——这是卡停主因
-            self.viewer.render()
+            if self._step_idx % self.render_every == 0:
+                self.viewer.render()
+            self._step_idx += 1
             if self.realtime:
                 remain = self.dt - (time.time() - step_start)
                 if remain > 0:
@@ -219,6 +228,10 @@ if __name__ == "__main__":
     parser.add_argument("--duration", type=float, default=60.0)
     parser.add_argument("--maxspeed", action="store_true",
                         help="关闭实时节拍，仿真全速运行（做基准测试用）")
+    parser.add_argument("--render-size", type=int, default=640,
+                        help="窗口渲染分辨率宽度（默认 640，卡顿时降到 480）")
+    parser.add_argument("--render-every", type=int, default=1,
+                        help="每 N 个控制步渲染一次（默认 1=50fps，卡顿时设 2=25fps）")
     args = parser.parse_args()
     if not os.path.isfile(args.policy):
         sys.exit(f"[ERROR] 策略不存在: {args.policy}（先跑 python tools/export_policy.py）")
@@ -227,4 +240,6 @@ if __name__ == "__main__":
     cfg = SimToSimCfg()
     cfg.sim.sim_duration = args.duration
     InteractiveRunner(cfg, args.policy, args.model,
-                      realtime=not args.maxspeed).run(args.duration)
+                      realtime=not args.maxspeed,
+                      render_size=args.render_size,
+                      render_every=args.render_every).run(args.duration)
